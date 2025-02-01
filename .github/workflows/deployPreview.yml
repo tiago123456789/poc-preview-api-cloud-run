@@ -37,7 +37,7 @@ jobs:
           docker build -t us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA .
           docker push  us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA
 
-        - name: Setup terraform
+      - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.7.1"
@@ -45,7 +45,6 @@ jobs:
       - name: Check version terraform
         run: terraform -v
 
-        
       - name: Deploy preview on cloud run service
         run: |
           cd infra/
