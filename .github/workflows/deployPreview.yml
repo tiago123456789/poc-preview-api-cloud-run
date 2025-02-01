@@ -33,6 +33,5 @@ jobs:
         run: |
           gcloud auth login --brief --cred-file=./gcp_credential.json
           gcloud auth configure-docker us-east4-docker.pkg.dev
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-east4-docker.pkg.dev
           docker build -t us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app:$GITHUB_SHA .
           docker push  us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app:$GITHUB_SHA
