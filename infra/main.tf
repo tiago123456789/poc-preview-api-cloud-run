@@ -2,7 +2,7 @@ terraform {
   backend "gcs" {
     bucket      = "poc-preview-api-cloud-run"
     prefix      = "terraform/state"
-    credentials = "./gcp_credential.json"
+    credentials = file("./../gcp.json")
   }
 }
 
