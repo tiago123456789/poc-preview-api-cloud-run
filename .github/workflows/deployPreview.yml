@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run
+name: Deploy preview environment
 
 on:
   pull_request:
