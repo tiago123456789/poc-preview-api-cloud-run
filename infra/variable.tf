@@ -4,6 +4,10 @@ variable "env" {
     default = "dev"
 }
 
+variable "hash" {
+    type = string
+}
+
 variable "docker_image" {
     type = string
 }

@@ -51,7 +51,7 @@ jobs:
           terraform init
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
-          -var env=dev 
+          -var env=dev  -var hash=$GITHUB_SHA
           echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
 
       # - name: Add comment to PR
