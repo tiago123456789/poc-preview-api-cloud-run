@@ -14,12 +14,11 @@ provider "google" {
 }
 
 # Deploy the Cloud Run service with environment variables
-resource "google_cloud_run_service" "preview_service" {
+resource "google_cloud_run_v2_service" "preview_service" {
   name     = "my-preview-app-${var.hash}"
   location = "us-east4"   # Replace with your desired region
 
   template {
-    spec {
       containers {
         image = "${var.docker_image}"  # Replace with your container image
         ports {
@@ -42,20 +41,17 @@ resource "google_cloud_run_service" "preview_service" {
         #   }
         # ]
       }
-    }
   }
 
 
   traffic {
-    latest_revision = true
+    revision        = true
     percent         = 100
   }
 
   # This block allows unauthenticated access to the service
-  metadata {
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
+  annotations = {
+    "run.googleapis.com/ingress" = "all"
   }
 
 }
