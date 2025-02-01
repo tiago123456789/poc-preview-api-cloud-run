@@ -15,7 +15,7 @@ provider "google" {
 
 # Deploy the Cloud Run service with environment variables
 resource "google_cloud_run_v2_service" "preview_service" {
-  name     = "${var.hash}"
+  name     = "app-${var.hash}"
   location = "us-east4"   # Replace with your desired region
 
   template {
