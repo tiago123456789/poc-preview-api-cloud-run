@@ -25,5 +25,6 @@ jobs:
       # Step 4: Build and push the Docker image to Google Container Registry
       - name: Build and push Docker image
         run: |
+          gcloud auth configure-docker us-east4-docker.pkg.dev
           docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/my-app:$GITHUB_SHA .
           docker push gcr.io/${{ secrets.GCP_PROJECT }}/my-app:$GITHUB_SHA
