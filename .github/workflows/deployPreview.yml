@@ -14,7 +14,6 @@ jobs:
 
       - name: Set up Google Cloud SDK
         run: |
-          # Install Google Cloud SDK
           curl https://sdk.cloud.google.com | bash
           source $HOME/google-cloud-sdk/path.bash.inc
           gcloud --version  # Verify installation
