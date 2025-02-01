@@ -48,11 +48,6 @@ resource "google_cloud_run_v2_service" "preview_service" {
     percent         = 100
   }
 
-  # This block allows unauthenticated access to the service
-  annotations = {
-    "run.googleapis.com/ingress" = "all"
-  }
-
 }
 
 
