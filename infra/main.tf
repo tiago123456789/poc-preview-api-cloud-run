@@ -2,7 +2,7 @@ terraform {
   backend "gcs" {
     bucket      = "poc-preview-api-cloud-run"
     prefix      = "terraform/state"
-    credentials = file("./../gcp.json")
+    credentials = "./../gcp.json"
   }
 }
 
@@ -10,8 +10,7 @@ terraform {
 provider "google" {
   project = "poc-preview-api" 
   region  = "us-east4" 
-  credentials = file("./../gcp.json")
-         
+  credentials = "./../gcp.json"
 }
 
 # Deploy the Cloud Run service with environment variables
