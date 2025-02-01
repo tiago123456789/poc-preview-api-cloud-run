@@ -51,4 +51,4 @@ jobs:
           terraform init
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
-          -var environment=dev \
+          -var env=dev \
