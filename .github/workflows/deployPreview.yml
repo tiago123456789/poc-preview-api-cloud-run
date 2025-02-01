@@ -18,11 +18,9 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT }}
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # Step 3: Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 4: Build and push the Docker image to Google Container Registry
       - name: Build and push Docker image
         run: |
           gcloud auth configure-docker us-east4-docker.pkg.dev
