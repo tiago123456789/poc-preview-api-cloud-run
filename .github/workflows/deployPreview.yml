@@ -9,20 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Google Cloud credentials
-        uses: "google-github-actions/auth@v0"
-        with:
-          project_id: ${{ secrets.GCP_PROJECT }}
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build and push Docker image
+      # Step 2: Set up Google Cloud SDK
+      - name: Set up Google Cloud SDK
         run: |
-          gcloud auth configure-docker us-east4-docker.pkg.dev
-          docker build -t us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA .
-          docker push     us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
+          # Install Google Cloud SDK
+          curl https://sdk.cloud.google.com | bash
+          source $HOME/google-cloud-sdk/path.bash.inc
+          gcloud --version  # Verify installation
+
+      # Step 3: Authenticate with Google Cloud
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" | base64 -d | gcloud auth activate-service-account --key-file=-
+          gcloud config set project ${{ secrets.GCP_PROJECT }}
+          gcloud auth list  # Verify authentication
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v3
+
+    #   - name: Set up Google Cloud credentials
+    #     uses: "google-github-actions/auth@v0"
+    #     with:
+    #       project_id: ${{ secrets.GCP_PROJECT }}
+    #       credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    #   - name: Set up Docker Buildx
+    #     uses: docker/setup-buildx-action@v2
+
+    #   - name: Build and push Docker image
+    #     run: |
+    #       gcloud auth configure-docker us-east4-docker.pkg.dev
+    #       docker build -t us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA .
+    #       docker push     us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
