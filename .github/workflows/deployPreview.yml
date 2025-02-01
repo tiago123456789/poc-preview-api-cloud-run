@@ -24,5 +24,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           gcloud auth configure-docker us-east4-docker.pkg.dev
-          docker build -t us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/my-app:$GITHUB_SHA .
-          docker push us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
+          docker build -t us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA .
+          docker push     us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
