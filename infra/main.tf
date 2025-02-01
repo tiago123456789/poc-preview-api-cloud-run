@@ -49,7 +49,25 @@ resource "google_cloud_run_service" "preview_service" {
     latest_revision = true
     percent         = 100
   }
+
+  # This block allows unauthenticated access to the service
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "all"
+    }
+  }
+
 }
+
+
+# Allow unauthenticated access (IAM policy binding)
+resource "google_cloud_run_service_iam_member" "unauthenticated" {
+  service = google_cloud_run_service.example.name
+  location = google_cloud_run_service.example.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"  # This allows all users, including unauthenticated ones
+}
+
 
 output "cloud_run_url" {
   value = google_cloud_run_service.preview_service.status[0].url
