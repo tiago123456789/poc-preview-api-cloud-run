@@ -51,4 +51,17 @@ jobs:
           terraform init
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
-          -var env=dev \
+          -var env=dev 
+          echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
+
+      
+      - name: Add comment to PR
+          uses: actions/github-script@v6
+          with:
+            script: |
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!"
+              })
