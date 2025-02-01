@@ -59,8 +59,8 @@ resource "google_cloud_run_v2_service" "preview_service" {
 
 # Allow unauthenticated access (IAM policy binding)
 resource "google_cloud_run_service_iam_member" "unauthenticated" {
-  service = google_cloud_run_service.preview_service.name
-  location = google_cloud_run_service.preview_service.location
+  service = google_cloud_run_v2_service.preview_service.name
+  location = google_cloud_run_v2_service.preview_service.location
   role     = "roles/run.invoker"
   member   = "allUsers"  # This allows all users, including unauthenticated ones
 }
