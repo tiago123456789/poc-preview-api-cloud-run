@@ -28,21 +28,11 @@ jobs:
           gcloud config set project ${{ secrets.GCP_PROJECT }}
           gcloud auth list  # Verify authentication
 
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    #   - name: Set up Google Cloud credentials
-    #     uses: "google-github-actions/auth@v0"
-    #     with:
-    #       project_id: ${{ secrets.GCP_PROJECT }}
-    #       credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-    #   - name: Set up Docker Buildx
-    #     uses: docker/setup-buildx-action@v2
-
-    #   - name: Build and push Docker image
-    #     run: |
-    #       gcloud auth configure-docker us-east4-docker.pkg.dev
-    #       docker build -t us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA .
-    #       docker push     us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
+      - name: Build and push Docker image
+        run: |
+          gcloud auth configure-docker us-east4-docker.pkg.dev
+          docker build -t us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA .
+          docker push     us-east4-docker.pkg.dev/poc-preview-api/my-app:$GITHUB_SHA
