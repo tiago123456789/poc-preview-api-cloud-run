@@ -9,11 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Google Cloud SDK
       - name: Set up Google Cloud SDK
         run: |
           # Install Google Cloud SDK
@@ -21,7 +19,6 @@ jobs:
           source $HOME/google-cloud-sdk/path.bash.inc
           gcloud --version  # Verify installation
 
-      # Step 3: Authenticate with Google Cloud
       - name: Authenticate to Google Cloud
         run: |
           echo "${{ secrets.GCP_SA_KEY }}" | base64 -d | gcloud auth activate-service-account --key-file=-
