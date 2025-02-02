@@ -1,7 +1,6 @@
 name: Deploy the preview environment
 
 on:
-  push:
   pull_request:
     types: [opened, reopened]
     branches:
@@ -62,8 +61,8 @@ jobs:
           -var env=dev  -var hash=$APP_NAME
           echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
 
-      # - name: Add comment to PR
-      #   uses: mshick/add-pr-comment@v2
-      #   with:
-      #     message: |
-      #       Link preview: ${{ env.URL_PREVIEW }} , 👋 Bye!
+      - name: Add comment to PR
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            Link preview: ${{ env.URL_PREVIEW }} , 👋 Bye!
