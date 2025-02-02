@@ -1,0 +1,47 @@
+name: Destroy the preview environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      preview_code:
+        type: string
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout code of app
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+          curl https://sdk.cloud.google.com | bash
+          source $HOME/google-cloud-sdk/path.bash.inc
+          gcloud --version # Verify installation
+
+      - name: Generate gcp.json
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode | jq > ./gcp_credential.json 
+          cat gcp_credential.json > ./gcp.json
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.1"
+
+      - name: Check version terraform
+        run: terraform -v
+
+      - name: Deploy preview on cloud run service
+        run: |
+          cd infra/
+          terraform init
+          terraform workspace select ${{ github.event.inputs.preview_code }}
+          terraform destroy -auto-approve \
+          -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
+          -var env=dev  -var hash=$(date +%s)
