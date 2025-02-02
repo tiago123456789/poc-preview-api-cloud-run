@@ -49,6 +49,7 @@ jobs:
         run: |
           cd infra/
           terraform init
+          terraform workspace new $GITHUB_SHA
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
           -var env=dev  -var hash=$(date +%s)
