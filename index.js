@@ -13,6 +13,12 @@ app.get("/test", (req, res) => {
   });
 });
 
+app.get("/hi", (req, res) => {
+  res.json({
+    message: "Hi, my friend!!!!",
+  });
+});
+
 app.listen(8080, () => {
   console.log("Server is running at port 3000");
 });
