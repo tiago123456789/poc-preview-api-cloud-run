@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  deploy:
+  destroy:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
