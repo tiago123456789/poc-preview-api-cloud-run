@@ -1,8 +1,13 @@
 name: Deploy the preview environment
 
 on:
+  push:
   pull_request:
     types: [opened, reopened]
+    branches:
+      - master
+      - stage
+      - develop
 
 jobs:
   deploy:
@@ -47,16 +52,18 @@ jobs:
 
       - name: Deploy preview on cloud run service
         run: |
+          APP_NAME=app-$(date +%s)
           cd infra/
           terraform init
-          terraform workspace new $(date +%s)
+          terraform workspace new $APP_NAME
+          terraform workspace list
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
-          -var env=dev  -var hash=$(date +%s)
+          -var env=dev  -var hash=$APP_NAME
           echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
 
-      - name: Add comment to PR
-        uses: mshick/add-pr-comment@v2
-        with:
-          message: |
-            Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!
+      # - name: Add comment to PR
+      #   uses: mshick/add-pr-comment@v2
+      #   with:
+      #     message: |
+      #       Link preview: ${{ env.URL_PREVIEW }} , 👋 Bye!
