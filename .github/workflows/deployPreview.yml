@@ -1,6 +1,7 @@
 name: Deploy the preview environment
 
 on:
+  push:
   pull_request:
     types: [opened, reopened]
 
