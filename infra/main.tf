@@ -6,23 +6,21 @@ terraform {
   }
 }
 
-
 provider "google" {
   project = "poc-preview-api" 
   region  = "us-east4" 
   credentials = "./../gcp.json"
 }
 
-# Deploy the Cloud Run service with environment variables
 resource "google_cloud_run_v2_service" "preview_service" {
   name     = "${var.hash}"
-  location = "us-east4"   # Replace with your desired region
+  location = "us-east4"
 
   template {
       containers {
-        image = "${var.docker_image}"  # Replace with your container image
+        image = "${var.docker_image}"  
         ports {
-          container_port = 8080  # Define the port your app listens on
+          container_port = 8080  
         }
 
         # Define environment variables for the container
@@ -48,12 +46,11 @@ resource "google_cloud_run_v2_service" "preview_service" {
 }
 
 
-# Allow unauthenticated access (IAM policy binding)
 resource "google_cloud_run_service_iam_member" "unauthenticated" {
   service = google_cloud_run_v2_service.preview_service.name
   location = google_cloud_run_v2_service.preview_service.location
   role     = "roles/run.invoker"
-  member   = "allUsers"  # This allows all users, including unauthenticated ones
+  member   = "allUsers"  
 }
 
 
