@@ -7,7 +7,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout code of app
         uses: actions/checkout@v3
@@ -48,19 +49,14 @@ jobs:
         run: |
           cd infra/
           terraform init
-          terraform workspace new $GITHUB_SHA
+          terraform workspace new $(date +%s)
           terraform apply -auto-approve \
           -var docker_image=us-east4-docker.pkg.dev/poc-preview-api/poc-preview-app/poc-preview-app:$GITHUB_SHA \
           -var env=dev  -var hash=$(date +%s)
           echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
 
       - name: Add comment to PR
-        uses: actions/github-script@v6
+        uses: mshick/add-pr-comment@v2
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!"
-            })
+          message: |
+            **Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!**
