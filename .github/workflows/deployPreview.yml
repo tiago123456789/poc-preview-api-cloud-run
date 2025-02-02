@@ -1,4 +1,4 @@
-name: Deploy preview environment
+name: Deploy the preview environment
 
 on:
   pull_request:
@@ -59,4 +59,4 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!**
+            Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!
