@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       preview_code:
+        description: Name cloud run service
         type: string
         required: true
 
