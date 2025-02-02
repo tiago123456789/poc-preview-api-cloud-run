@@ -55,13 +55,13 @@ jobs:
           -var env=dev  -var hash=$(date +%s)
           echo URL_PREVIEW=$(terraform output cloud_run_url) >> $GITHUB_ENV
 
-      # - name: Add comment to PR
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: "Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!"
-      #       })
+      - name: Add comment to PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Link preview: ${{ env.URL_PREVIEW }} \n 👋 Bye!"
+            })
